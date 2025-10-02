@@ -31,37 +31,37 @@ void	init_shell(t_shell *shell, char **env)
 	shell->last_exit_code = 0;
 }
 
-bool	add_to_history(const char *line)
+int	add_to_history(const char *line)
 {
-	if (line[0] != '\0')
-	{
-		add_history(line);
-		return (true);
-	}
-	else
-	{
-		close_descriptor(&g_dupstdin);
-		deallocate_memory(&line);
-		return (false);
-	}
+	   if (line[0] != '\0')
+	   {
+		   add_history(line);
+		   return 1;
+	   }
+	   else
+	   {
+		   close_descriptor(&g_dupstdin);
+		   deallocate_memory(&line);
+		   return 0;
+	   }
 }
 
-bool	handle_tokenization_error(t_shell *shell, bool success, char *line)
+int	handle_tokenization_error(t_shell *shell, int success, char *line)
 {
-	if (success == false)
+		if (success == 0)
 	{
 		shell->last_exit_code = 258;
 		ft_lstclear(&shell->tokens, release_token_memory);
 		close_descriptor(&g_dupstdin);
 		deallocate_memory(&line);
-		return (false);
-	}
-	return (true);
+		   return 0;
+	   }
+	   return 1;
 }
 
-bool	handle_parsing_error(t_shell *shell, bool success, char *line)
+int	handle_parsing_error(t_shell *shell, int success, char *line)
 {
-	if (success == false || validate_subexpressions(shell, shell->steps) == false)
+		if (success == 0 || validate_subexpressions(shell, shell->steps) == 0)
 	{
 		shell->last_exit_code = 258;
 		ft_stderr("Parse error\n");
@@ -70,9 +70,9 @@ bool	handle_parsing_error(t_shell *shell, bool success, char *line)
 		rl_on_new_line();
 		close_descriptor(&g_dupstdin);
 		deallocate_memory(&line);
-		return (false);
-	}
-	return (true);
+		   return 0;
+	   }
+	   return 1;
 }
 
 int	main(int argc, char **argv, char **env)

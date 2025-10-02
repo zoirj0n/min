@@ -44,19 +44,19 @@ struct s_token
 	size_t			end;
 	char			*substr;
 	t_list			*sub_tokens;
-	bool			expanded;
+	int			expanded;
 };
 
 struct s_wildcard
 {
 	char	*str;
-	bool	is_wildcard;
+	int	is_wildcard;
 };
 
 char		*strip_dollar_signs(const char *str);
 t_list		*process_input_line(const t_shell *shell, const char *line,
-				bool *success);
-t_list		*process_environment_string(const char *line, bool *success);
+				int *success);
+t_list		*process_environment_string(const char *line, int *success);
 t_list		*extract_environment_variable(const t_shell *shell, const char *line,
 				size_t *idx);
 void		display_token_details(t_list *tokens);

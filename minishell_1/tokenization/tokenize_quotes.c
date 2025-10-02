@@ -11,7 +11,7 @@ static void	*parse_error(const char *msg, t_token *tkn)
 
 
 static t_list	*create_token_el(const t_shell *shell, t_token *tkn,
-	const char *line, const bool expand_var)
+	const char *line, const int expand_var)
 {
 	t_list	*el;
 
@@ -21,7 +21,7 @@ static t_list	*create_token_el(const t_shell *shell, t_token *tkn,
 		tkn->substr = ft_substr(line, tkn->start, tkn->end - tkn->start + 1);
 	if (tkn->substr == NULL)
 		return (parse_error(NULL, tkn));
-	while (expand_var == true && check_environment_variable(tkn->substr))
+		while (expand_var == 1 && check_environment_variable(tkn->substr))
 		tkn->substr = resolve_environment_variable(shell, tkn->substr);
 	if (ft_strchr(tkn->substr, '*') == NULL)
 		tkn->substr = remove_quote_characters(tkn->substr);
@@ -60,7 +60,7 @@ t_list	*create_single_quote_token(const t_shell *shell, const char *line,
 }
 
 t_list	*create_double_quote_token(const t_shell *shell, const char *line,
-	size_t *idx, const bool expand_var)
+	size_t *idx, const int expand_var)
 {
 	size_t  i;
 	t_token *tkn;

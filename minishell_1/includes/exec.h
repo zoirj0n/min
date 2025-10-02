@@ -13,6 +13,9 @@ struct	s_exec_flags
 	bool	first_flag;
 	bool	exit;
 	bool	valid_redirs;
+	int		first_flag;
+	int		exit;
+	int		valid_redirs;
 	int		w_status;
 	int		action;
 	int		step_num_start;
@@ -72,7 +75,7 @@ void		report_command_not_found(t_shell *shell, t_exec_step *step, bool *exit_fla
 void		report_command_is_directory(t_shell *shell, t_exec_step *step, bool *exit_flag);
 void		report_file_not_found(t_shell *shell, t_exec_step *step, bool *exit_flag);
 void		report_permission_denied(t_shell *shell, t_exec_step *step,
-				bool *exit_flag);
+			   int *exit_flag);
 
 /* ----- FUNCTIONS TO CHECK FOR COMMAND AND FILE VALIDATIONS ----- */
 bool		verify_path_validity(t_exec_step *step);
@@ -80,11 +83,16 @@ bool		verify_command_validity(t_exec_step *step, bool valid_redirs);
 bool		detect_missing_command(t_exec_step *step, bool valid_redirs);
 bool		detect_missing_file(t_exec_step *step, bool valid_redirs);
 bool		detect_permission_issue(t_exec_step *step, bool valid_redirs);
+int		verify_path_validity(t_exec_step *step);
+int		verify_command_validity(t_exec_step *step, int valid_redirs);
+int		detect_missing_command(t_exec_step *step, int valid_redirs);
+int		detect_missing_file(t_exec_step *step, int valid_redirs);
+int		detect_permission_issue(t_exec_step *step, int valid_redirs);
 
 /* ----- FUNCTION TO HANDLE REDIRECTIONS -----*/
 t_redir		*retrieve_last_input_redirect(t_list *in_redir);
 bool		configure_redirections(t_shell *shell, t_exec_step *step,
-				bool *exit_flag, int *out_fd);
+			   int *exit_flag, int *out_fd);
 
 /* ----- SOME UTILS ----*/
 int			check_directory_status(const char *path);
@@ -95,5 +103,7 @@ char		*resolve_command_path(char *bin, char **env);
 int			verify_redirection_access(t_redir *redir_file, t_list **redir);
 bool		validate_redirection_files(t_exec_step *step);
 bool		confirm_redirection_file_exists(t_redir *redir_file, int *out_fd);
+int		validate_redirection_files(t_exec_step *step);
+int		confirm_redirection_file_exists(t_redir *redir_file, int *out_fd);
 
 #endif

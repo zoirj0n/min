@@ -1,20 +1,20 @@
 
 #include "minishell.h"
 
-bool	reprocess_environment_token(t_token *token, t_list **el, t_list **tokens)
+int	reprocess_environment_token(t_token *token, t_list **el, t_list **tokens)
 {
 	char	*substr_copy;
-	bool	success;
+		int	success;
 
 	substr_copy = ft_strdup(token->substr);
 	ft_lstclear(el, release_token_memory);
 	*el = process_environment_string(substr_copy, &success);
 	deallocate_memory(&substr_copy);
 	ft_lstadd_back(tokens, *el);
-	return (success);
+		return (success);
 }
 
-void	update_quote_state(const char ch, char *quote, bool *in_quote)
+void	update_quote_state(const char ch, char *quote, int *in_quote)
 {
 	if (ch == '\'' || ch == '\"')
 	{
@@ -35,7 +35,7 @@ static char	*get_env_string(const char *line, size_t *idx)
 {
 	char	*str;
 	size_t	i;
-	bool	in_quote;
+	int	in_quote;
 	char	quote;
 
 	i = *idx;

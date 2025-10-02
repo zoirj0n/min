@@ -34,7 +34,7 @@ struct s_shell
 	t_list *heredoc_contents;
 };
 
-bool validate_subexpressions(t_shell *shell, t_list *shell_steps);
+int validate_subexpressions(t_shell *shell, t_list *shell_steps);
 void close_descriptor(int *fd);
 char **duplicate_string_array(char **arr);
 void release_execution_steps(t_list **step_lists);
@@ -43,7 +43,7 @@ void handle_interrupt_command(int sig);
 void handle_quit_command(int sig);
 void handle_heredoc_signal(int sig);
 char *retrieve_environment_variable(const t_shell *shell, const char *name);
-bool reprocess_environment_token(
+int reprocess_environment_token(
 	t_token *token, t_list **el, t_list **tokens);
 char *read_command_line(t_shell *shell);
 void process_heredoc_inputs(t_shell *shell);

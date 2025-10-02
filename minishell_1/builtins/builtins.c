@@ -23,23 +23,23 @@ int compare_strings(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-bool check_builtin_command(t_exec_step *step)
+int check_builtin_command(t_exec_step *step)
 {
-	if (compare_strings(step->cmd->arg_arr[0], "echo") == 0 || compare_strings(step->cmd->arg_arr[0], "cd") == 0 || compare_strings(step->cmd->arg_arr[0], "pwd") == 0 || compare_strings(step->cmd->arg_arr[0], "env") == 0 || compare_strings(step->cmd->arg_arr[0], "export") == 0 || compare_strings(step->cmd->arg_arr[0], "exit") == 0 || compare_strings(step->cmd->arg_arr[0], "unset") == 0)
-		return (true);
-	return (false);
+	   if (compare_strings(step->cmd->arg_arr[0], "echo") == 0 || compare_strings(step->cmd->arg_arr[0], "cd") == 0 || compare_strings(step->cmd->arg_arr[0], "pwd") == 0 || compare_strings(step->cmd->arg_arr[0], "env") == 0 || compare_strings(step->cmd->arg_arr[0], "export") == 0 || compare_strings(step->cmd->arg_arr[0], "exit") == 0 || compare_strings(step->cmd->arg_arr[0], "unset") == 0)
+		   return 1;
+	   return 0;
 }
 
-bool requires_parent_execution(t_exec_step *step)
+int requires_parent_execution(t_exec_step *step)
 {
-	if (step->cmd == NULL || step->cmd->arg_arr[0] == NULL)
-		return (false);
-	if (compare_strings(step->cmd->arg_arr[0], "unset") == 0 || compare_strings(step->cmd->arg_arr[0], "cd") == 0 || (compare_strings(step->cmd->arg_arr[0], "export") == 0 && step->cmd->arg_arr[1] != NULL) || compare_strings(step->cmd->arg_arr[0], "exit") == 0)
-		return (true);
-	return (false);
+	   if (step->cmd == NULL || step->cmd->arg_arr[0] == NULL)
+		   return 0;
+	   if (compare_strings(step->cmd->arg_arr[0], "unset") == 0 || compare_strings(step->cmd->arg_arr[0], "cd") == 0 || (compare_strings(step->cmd->arg_arr[0], "export") == 0 && step->cmd->arg_arr[1] != NULL) || compare_strings(step->cmd->arg_arr[0], "exit") == 0)
+		   return 1;
+	   return 0;
 }
 
-bool execute_builtin_command(t_exec_step *step, t_shell *shell, bool child)
+int execute_builtin_command(t_exec_step *step, t_shell *shell, int child)
 {
 	if (compare_strings(step->cmd->arg_arr[0], "echo") == 0)
 		display_echo_output(step, shell);
@@ -55,7 +55,7 @@ bool execute_builtin_command(t_exec_step *step, t_shell *shell, bool child)
 		terminate_shell(step, shell, child);
 	if (compare_strings(step->cmd->arg_arr[0], "unset") == 0)
 		remove_environment_variable(shell, step);
-	if (compare_strings(step->cmd->arg_arr[0], "echo") == 0 || compare_strings(step->cmd->arg_arr[0], "cd") == 0 || compare_strings(step->cmd->arg_arr[0], "pwd") == 0 || compare_strings(step->cmd->arg_arr[0], "env") == 0 || compare_strings(step->cmd->arg_arr[0], "export") == 0 || compare_strings(step->cmd->arg_arr[0], "exit") == 0 || compare_strings(step->cmd->arg_arr[0], "unset") == 0)
-		return (true);
-	return (false);
+	   if (compare_strings(step->cmd->arg_arr[0], "echo") == 0 || compare_strings(step->cmd->arg_arr[0], "cd") == 0 || compare_strings(step->cmd->arg_arr[0], "pwd") == 0 || compare_strings(step->cmd->arg_arr[0], "env") == 0 || compare_strings(step->cmd->arg_arr[0], "export") == 0 || compare_strings(step->cmd->arg_arr[0], "exit") == 0 || compare_strings(step->cmd->arg_arr[0], "unset") == 0)
+		   return 1;
+	   return 0;
 }

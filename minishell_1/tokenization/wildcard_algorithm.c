@@ -59,7 +59,7 @@ static int terminating_charseq(const char *str, size_t *wc_i, size_t *i,
 	return (CONTINUE);
 }
 
-bool compare_string_with_wildcard(const char *str, t_wildcard **wc_segs)
+int compare_string_with_wildcard(const char *str, t_wildcard **wc_segs)
 {
 	size_t i;
 	size_t wc_i;
@@ -73,14 +73,14 @@ bool compare_string_with_wildcard(const char *str, t_wildcard **wc_segs)
 			res = non_terminating_charseq(str, &wc_i, &i, wc_segs);
 		else if (wc_segs[wc_i]->is_wildcard && wc_segs[wc_i + 1] != NULL)
 			res = non_terminating_wildcard(str, &wc_i, &i, wc_segs);
-		else if (wc_segs[wc_i]->is_wildcard && wc_segs[wc_i + 1] == NULL)
-			return (true);
-		else if (!wc_segs[wc_i]->is_wildcard && wc_segs[wc_i + 1] == NULL)
-			res = terminating_charseq(str, &wc_i, &i, wc_segs);
+		   else if (wc_segs[wc_i]->is_wildcard && wc_segs[wc_i + 1] == NULL)
+			   return 1;
+		   else if (!wc_segs[wc_i]->is_wildcard && wc_segs[wc_i + 1] == NULL)
+			   res = terminating_charseq(str, &wc_i, &i, wc_segs);
 		if (res != CONTINUE)
 			return (res);
 	}
-	if (str[i] == '\0' && wc_segs[wc_i]->is_wildcard && !wc_segs[wc_i + 1])
-		return (true);
-	return (false);
+	   if (str[i] == '\0' && wc_segs[wc_i]->is_wildcard && !wc_segs[wc_i + 1])
+		   return 1;
+	   return 0;
 }

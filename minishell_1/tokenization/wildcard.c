@@ -66,20 +66,20 @@ static char *expand_wildcard_cleanup(char *res, char *token,
 	return (remove_quote_characters(res));
 }
 
-static bool check_for_wildcards(t_wildcard **wildcards)
+static int check_for_wildcards(t_wildcard **wildcards)
 {
 	size_t i;
-	bool all_charseqs;
+		int all_charseqs;
 
 	i = 0;
-	all_charseqs = true;
-	while (wildcards[i] != NULL)
-	{
-		if (wildcards[i]->is_wildcard == true)
-			all_charseqs = false;
-		i++;
-	}
-	return (all_charseqs);
+		all_charseqs = 1;
+	   while (wildcards[i] != NULL)
+	   {
+		   if (wildcards[i]->is_wildcard == 1)
+			   all_charseqs = 0;
+		   i++;
+	   }
+	   return (all_charseqs);
 }
 
 char *apply_wildcard_expansion(char *token)
@@ -97,15 +97,15 @@ char *apply_wildcard_expansion(char *token)
 	contents = ft_split(contents_str, '\n');
 	deallocate_memory(&contents_str);
 	wildcards = parse_wildcard_pattern(token);
-	if (check_for_wildcards(wildcards) == true)
-		return (expand_wildcard_cleanup(res, token, wildcards, contents));
+	   if (check_for_wildcards(wildcards) == 1)
+		   return (expand_wildcard_cleanup(res, token, wildcards, contents));
 	i = -1;
-	while (contents[++i] != NULL)
-	{
-		if (compare_string_with_wildcard(contents[i], wildcards) == true && res[0] != '\0')
-			res = join_and_free_strings(res, " ", 1);
-		if (compare_string_with_wildcard(contents[i], wildcards) == true)
-			res = join_and_free_strings(res, contents[i], 1);
-	}
+	   while (contents[++i] != NULL)
+	   {
+		   if (compare_string_with_wildcard(contents[i], wildcards) == 1 && res[0] != '\0')
+			   res = join_and_free_strings(res, " ", 1);
+		   if (compare_string_with_wildcard(contents[i], wildcards) == 1)
+			   res = join_and_free_strings(res, contents[i], 1);
+	   }
 	return (expand_wildcard_cleanup(res, token, wildcards, contents));
 }

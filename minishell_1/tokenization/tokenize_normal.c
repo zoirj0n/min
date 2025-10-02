@@ -33,7 +33,7 @@ static t_token	*skip_to_end_token(const char *line, size_t *i, t_token *tkn)
 }
 
 t_list	*create_normal_token(const t_shell *shell, const char *line, size_t *idx,
-	bool expand_var)
+	int expand_var)
 {
 	size_t	i;
 	t_token	*tkn;
